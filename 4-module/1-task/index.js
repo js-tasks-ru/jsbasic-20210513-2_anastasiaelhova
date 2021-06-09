@@ -6,5 +6,6 @@ function makeFriendsList(friends) {
         li.append(`${friend.firstName} ${friend.lastName}`);
         listDom.append(li);
     }
+
     return listDom;
 }
