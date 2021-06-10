@@ -1,7 +1,3 @@
-.container {
-  max-width: 500px;
-}
-
 .carousel {
   height: var(--carousel-height);
   position: relative;
