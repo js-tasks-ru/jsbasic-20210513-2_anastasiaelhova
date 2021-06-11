@@ -3,7 +3,6 @@ let statusCellIndex = 1;
 let maxAge = 18;
 
 function highlight(table) {
-    //let rows = table.querySelector('tbody').rows;
     let rows = table.rows;
     for(let row of rows) {
         let attrAvailable = row.querySelector('[data-available]');
@@ -28,7 +27,6 @@ function highlight(table) {
         }
 
         if (Number(contentStatus.innerHTML) < maxAge) {
-            console.log(row);
             row.style.textDecoration = 'line-through';
         }
     }
