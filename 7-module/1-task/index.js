@@ -97,8 +97,6 @@ export default class RibbonMenu {
       bubbles: true
     });
 
-    console.log(eventRibbon);
-    console.log(this.elem);
     this.elem.dispatchEvent(eventRibbon);
   }
 }
