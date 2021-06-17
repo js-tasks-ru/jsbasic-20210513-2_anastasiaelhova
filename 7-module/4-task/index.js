@@ -74,26 +74,38 @@ export default class StepSlider {
     let steps = this._steps;
     let segmentWidth = bounds.width / (steps - 1); // ширина одного сегмента
     let progress = this.elem.querySelector('.slider__progress');
+    let thisClass = this;
 
-    function move(event) {
+    function move(ev) {
+      //console.log(this);
       slider.classList.add('slider_dragging');
+      let clientXClick = ev.clientX;
+      let leftPercents = 100 * (clientXClick - bounds.left) / bounds.width;
 
-      let { pageX, pageY } = event;
-      thumb.style.left = `${pageX}px`;
+      if (leftPercents < 0) { // ползунок не должен выходить за левую границу
+        leftPercents = 0;
+      }
+      if (leftPercents > 100) { // ползунок не должен выходить за правую границу
+        leftPercents = 100;
+      }
+      
+      let closestStep = Math.round(leftPercents * ((steps-1) / 100));
 
-      let clientXClick = event.clientX;
-      let closestStep = Math.round( (clientXClick - bounds.left) / segmentWidth );
-  
-      slider.querySelector('.slider__value').innerHTML = closestStep;
+      thisClass.elem.querySelector('.slider__value').innerHTML = closestStep;
       slider.querySelector('.slider__step-active').classList.remove('slider__step-active');
       slider.querySelector('.slider__steps').querySelectorAll('span')[closestStep].classList.add('slider__step-active');
-  
-      let leftPercents = 100 / (steps-1) * closestStep;
-  
+
       thumb.style.left = `${leftPercents}%`;
       progress.style.width = `${leftPercents}%`;
-
     }
+
+    /*document.onpointermove = (event) => {  // this в move = undefined
+      move(event);
+    } ;*/
+
+    /*document.addEventListener('pointermove', (event) => {  // this в move = undefined
+      move(event);
+    });*/
 
     document.addEventListener('pointermove', move);
 
@@ -101,6 +113,12 @@ export default class StepSlider {
       slider.classList.remove('slider_dragging');
       document.removeEventListener('pointermove', move);
       document.onmouseup = null;
+      let step = +(thisClass.elem.querySelector('.slider__value').innerHTML);
+      let eventChange = new CustomEvent('slider-change', {
+        detail: step,
+        bubbles: true
+      });
+      thisClass.elem.dispatchEvent(eventChange);
     });
 
   }
