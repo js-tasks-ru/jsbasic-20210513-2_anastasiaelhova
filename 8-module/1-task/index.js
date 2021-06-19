@@ -39,6 +39,21 @@ export default class CartIcon {
   }
 
   updatePosition() {
-    // ваш код ...
+    let cartIcon = this.elem;
+    let topMargin = 50;  // начальный отступ иконки и отступ при фиксированной позиции
+    let firstContainer = document.querySelector('.container');
+    let topOffset = cartIcon.getBoundingClientRect().top;
+
+    if (cartIcon.offsetWidth && cartIcon.offsetHeight && (pageYOffset > topMargin)) {  // проверяем видимость иконки и высоту прокрутки страницы
+      let leftMargin1 = firstContainer.getBoundingClientRect().right + 20;
+      let leftMArgin2 = document.documentElement.clientWidth - this.elem.offsetWidth - 10;
+      let leftMargin = Math.min(leftMargin1, leftMArgin2);
+      cartIcon.style.position = 'fixed';
+      cartIcon.style.top = `${topMargin}px`;
+      cartIcon.style.left = `${leftMargin}px`;
+    } else { // иначе сбрасываем в дефолтное состояние
+      cartIcon.style.position = 'absolute';
+      cartIcon.style.left = `auto`;
+    }
   }
 }
